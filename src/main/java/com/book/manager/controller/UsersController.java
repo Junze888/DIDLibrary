@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.book.manager.entity.Users;
+import com.book.manager.service.DIDService;
 import com.book.manager.service.UserService;
 import com.book.manager.util.R;
 import com.book.manager.util.consts.Constants;
@@ -15,14 +16,22 @@ import com.book.manager.util.vo.UserOut;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import org.fisco.bcos.sdk.v3.BcosSDK;
+import org.fisco.bcos.sdk.v3.client.Client;
+import org.fisco.bcos.sdk.v3.client.protocol.response.BlockNumber;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static com.book.manager.ManagerApplication.weIdService;
 
 /**
  * @Description 用户管理
@@ -33,9 +42,18 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 public class UsersController {
-
     @Autowired
     private UserService userService;
+
+    @RequestMapping ("/query")
+    @ResponseBody
+    public String handleQueryRequest(@RequestParam("queryName") String params) {
+        System.out.println(params);
+        // 处理请求，并返回处理结果
+        //查询DID文档
+        return weIdService.getWeIdDocumentJson(params).getResult();
+
+    }
 
     @ApiOperation("用户列表")
     @PostMapping("/list")

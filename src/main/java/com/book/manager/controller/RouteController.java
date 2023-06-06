@@ -19,10 +19,10 @@ public class RouteController {
     /**
      * 跳转登录
      */
-    @ApiOperation("跳转登录页")
-    @GetMapping({"/login","/","logout"})
+    @ApiOperation("查询页")
+    @GetMapping({"/query","/","logout"})
     public String toLogin() {
-        return "login";
+        return "user/query";
     }
 
     /**

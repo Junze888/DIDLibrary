@@ -28,47 +28,50 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //授权
-        http.formLogin()
-                //自定义登陆页面
-                .loginPage("/login")
-                //如果URL为loginPage,则用SpringSecurity中自带的过滤器去处理该请求
-                .successForwardUrl("/index")
-                .loginProcessingUrl("/user/login")
-                .and()
-                //请求授权
-                .authorizeRequests()
-                //在访问我们的URL时，我们是不需要省份认证，可以立即访问
-                .antMatchers("/javaex/**","/","/favicon.ico","/login","/user/login").permitAll()
-                //所有请求都被拦截，都需认证
-                .anyRequest().authenticated()
-                .and()
-                // 请求头允许X-ContentType-Options
-                //.headers().contentTypeOptions().disable()
-                //.and()
-                // 请求头允许X-Frame-Options, 否则所有iframe将失效
-                .headers().frameOptions().disable()
-                // 注销, 回到首页
-//                .logout().logoutSuccessUrl("/")
-                //SpringSecurity保护机制
-                .and()
-                .csrf().disable();
+//        http.formLogin()
+//                //自定义登陆页面
+//                .loginPage("/login")
+//                //如果URL为loginPage,则用SpringSecurity中自带的过滤器去处理该请求
+//                .successForwardUrl("/index")
+//                .loginProcessingUrl("/user/login")
+//                .and()
+//                //请求授权
+//                .authorizeRequests()
+//                //在访问我们的URL时，我们是不需要省份认证，可以立即访问
+//                .antMatchers("/javaex/**","/","/favicon.ico","/login","/user/login").permitAll()
+//                //所有请求都被拦截，都需认证
+//                .anyRequest().authenticated()
+//                .and()
+//                // 请求头允许X-ContentType-Options
+//                //.headers().contentTypeOptions().disable()
+//                //.and()
+//                // 请求头允许X-Frame-Options, 否则所有iframe将失效
+//                .headers().frameOptions().disable()
+//                // 注销, 回到首页
+////                .logout().logoutSuccessUrl("/")
+//                //SpringSecurity保护机制
+//                .and()
+//                .csrf().disable();
+//
+//        // 开启记住我功能
+//        http.rememberMe().rememberMeParameter("remember");
+        http.authorizeRequests().anyRequest().permitAll()
+                .and().csrf().disable();
 
-        // 开启记住我功能
-        http.rememberMe().rememberMeParameter("remember");
     }
 
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // 认证
-        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        // swagger 资源放行
-        web.ignoring().antMatchers("/webjars/**","/v2/**","/swagger-resources/**","/doc.html","/docs.html","swagger-ui.html");
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        // 认证
+//        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+//    }
+//
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        // swagger 资源放行
+//        web.ignoring().antMatchers("/webjars/**","/v2/**","/swagger-resources/**","/doc.html","/docs.html","swagger-ui.html");
+//    }
 
     /**
      * 指定加密方式
